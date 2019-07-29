@@ -26804,6 +26804,17 @@ namespace System.Windows.Forms
             }
         }
 
+        internal void SetAccessibleObjectParent(AccessibleObject editingControlAccessibleObject)
+        {
+            if (CurrentCell != null)
+            {
+                editingControlAccessibleObject.SetParent(CurrentCell.AccessibilityObject);
+
+                CurrentCell.AccessibilityObject.SetDetachableChild(editingControlAccessibleObject);
+                CurrentCell.AccessibilityObject.RaiseStructureChangedEvent(UnsafeNativeMethods.StructureChangeType.ChildAdded, editingControlAccessibleObject.RuntimeId);
+            }
+        }
+
         private bool SetAndSelectCurrentCellAddress(int columnIndex,
             int rowIndex,
             bool setAnchorCellAddress,
