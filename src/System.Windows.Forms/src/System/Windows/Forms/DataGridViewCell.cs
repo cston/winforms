@@ -2581,9 +2581,12 @@ namespace System.Windows.Forms
                 dgv.TextBoxControlWasDetached = false;
             }
 
-            dgv.EditingControlAccessibleObject.SetParent(AccessibilityObject);
-            AccessibilityObject.SetDetachableChild(dgv.EditingControl.AccessibilityObject);
-            AccessibilityObject.RaiseStructureChangedEvent(UnsafeNativeMethods.StructureChangeType.ChildAdded, dgv.EditingControlAccessibleObject.RuntimeId);
+            dgv.EditingControl.HandleCreated += (sender, e) =>
+            {
+                DataGridView.EditingControlAccessibleObject.SetParent(AccessibilityObject);
+                AccessibilityObject.SetDetachableChild(DataGridView.EditingControl.AccessibilityObject);
+                AccessibilityObject.RaiseStructureChangedEvent(UnsafeNativeMethods.StructureChangeType.ChildAdded, DataGridView.EditingControlAccessibleObject.RuntimeId);
+            };
         }
 
         protected virtual bool KeyDownUnsharesRow(KeyEventArgs e, int rowIndex)
